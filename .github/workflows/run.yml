@@ -2,10 +2,6 @@ name: Run
 
 on:
   workflow_dispatch:
-    inputs:
-      deb:
-        description: "Direct URL to deb file"
-        required: true
 
 jobs:
   run:
@@ -14,19 +10,30 @@ jobs:
     steps:
       - name: Convert deb to IPA
         run: |
-          curl -L -o ${{ github.workspace }}/app.deb "${{ github.event.inputs.deb }}"
-          dpkg-deb -X ${{ github.workspace }}/app.deb ${{ github.workspace }}/app
-          find ${{ github.workspace }}/app -type f
-          ls -la ${{ github.workspace }}/app
+          # Download the IPA
+          curl -L -o ${{ github.workspace }}/app.ipa "https://drive.google.com/uc?export=download&id=1GalIXGAlzoNK_OLoWhApHwyH1aMlaF-O"
 
-          mkdir -p ${{ github.workspace }}/ipa/Payload
-          cp -R ${{ github.workspace }}/app/Applications/* ${{ github.workspace }}/ipa/Payload
+          # Download the deb
+          curl -L -o ${{ github.workspace }}/app.deb "https://github.com/vincedes3/CitizenPremium/releases/download/v1.1.0/com.vincedes3.citizen_1.1.0.deb"
 
-          cd ${{ github.workspace }}/ipa
-          zip -r ${{ github.workspace }}/App.ipa .
+          # Extract the deb
+          dpkg-deb -X ${{ github.workspace }}/app.deb ${{ github.workspace }}/tweak
+
+          # Unzip the IPA
+          unzip ${{ github.workspace }}/app.ipa -d ${{ github.workspace }}/ipa_extracted
+
+          # Find the .app bundle
+          APP_PATH=$(find ${{ github.workspace }}/ipa_extracted/Payload -name "*.app" -maxdepth 1)
+
+          # Copy the dylib into the app
+          cp ${{ github.workspace }}/tweak/Library/MobileSubstrate/DynamicLibraries/CitizenPremium.dylib "$APP_PATH/"
+
+          # Repack the IPA
+          cd ${{ github.workspace }}/ipa_extracted
+          zip -r ${{ github.workspace }}/App_modified.ipa .
 
       - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
           name: App
-          path: ${{ github.workspace }}/App.ipa
+          path: ${{ github.workspace }}/App_modified.ipa
