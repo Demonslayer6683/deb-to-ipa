@@ -11,7 +11,7 @@ jobs:
       - name: Convert deb to IPA
         run: |
           # Download the IPA from MediaFire
-          curl -L -o ${{ github.workspace }}/app.ipa "https://download1349.mediafire.com/gabcesp8wxtgOjBxF_sUZPDdW5QhN3gpo1-X9vd9rCZlLrRpUXpp8PMGOZXZwfFqG5mTorUn4yd92YzB8mUFuH3FTD-pS_GgL9F2jTcFM1dYDna-q-qfinkWAHZpMNI3xSBEAaYqTvLOhyGZbg4eYeP3DgJRoEbnnZhmgq1U4B4_GCE/qhq37lm2051p583/com.sp0n.vigilante_0.1281.1_und3fined.ipa"
+          curl -L -o ${{ github.workspace }}/app.ipa "https://download1475.mediafire.com/rd0xn8txflbgFUrvQXiPzWIV_1kx48Pa5go09FVqxqBgxaL4hsKNxVT3R57Qqh1-6DogDJ4nLl8kR604DGYt30qTw8MM8YvhyntqYmAOuJ4zQpmEwWTuZfTwdIvuIWq8xV1GeWx7DQzL8Uee_WH7xlLlnbKWQlzA4jnCbXyCnBhN9lo/1z9m0ccx42c04ls/com.sp0n.vigilante-0.1262.0-eeveedecrypter.ipa"
 
           # Download the deb
           curl -L -o ${{ github.workspace }}/app.deb "https://github.com/vincedes3/CitizenPremium/releases/download/v1.1.0/com.vincedes3.citizen_1.1.0.deb"
