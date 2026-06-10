@@ -16,10 +16,12 @@ jobs:
         run: |
           curl -L -o ${{ github.workspace }}/app.deb "${{ github.event.inputs.deb }}"
           dpkg-deb -X ${{ github.workspace }}/app.deb ${{ github.workspace }}/app
+          find ${{ github.workspace }}/app -type f
+          ls -la ${{ github.workspace }}/app
 
           mkdir -p ${{ github.workspace }}/ipa/Payload
           cp -R ${{ github.workspace }}/app/Applications/* ${{ github.workspace }}/ipa/Payload
-          
+
           cd ${{ github.workspace }}/ipa
           zip -r ${{ github.workspace }}/App.ipa .
 
